@@ -19,15 +19,30 @@ main{
     align-items: center;
 }
 
-.cavaludo{
+#cavaludo{
     width:300px;
     border-radius: 50%;
-    transition: 10s;
+    transition: 4s;
     margin:30px;
+    cursor:pointer;
 }
 
-.cavaludo:hover{
-    transform: rotate(1800deg);
+#cavaludo:hover{
+    transform: rotate(360deg);
+}
+
+.btnCavaludo{
+    background-color: transparent;
+    transition: 1s;
+    transform:scale(1);
+}
+
+.btnCavaludo:active{
+    transform:scale(2);
+}
+
+.girando{
+    transform: rotate3d(1, 1, 0, 180deg);
 }
 
 .container{
@@ -39,6 +54,7 @@ input{
     border-radius: 15px;
     font-size: 18px;
     transition: 250ms;
+    margin:5px;
 }
 
 input:focus{
