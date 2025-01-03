@@ -1,0 +1,63 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+html,body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(31, 31, 31);
+    color: white;
+}
+
+main{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cavaludo{
+    width:300px;
+    border-radius: 50%;
+    transition: 10s;
+    margin:30px;
+}
+
+.cavaludo:hover{
+    transform: rotate(1800deg);
+}
+
+.container{
+    text-align: center;
+}
+
+input{
+    padding:6px;
+    border-radius: 15px;
+    font-size: 18px;
+    transition: 250ms;
+}
+
+input:focus{
+    background-color: black;
+    color: white;
+}
+
+.btn{
+    padding: 10px;
+    border-radius: 16px;
+    margin:5px;
+    font-size: 18px;
+    transition: 300ms;
+    background-color: white;
+}
+
+.btn:hover{
+    padding:13px;
+    background-color: black;
+    color: white;
+    cursor:pointer;
+}
