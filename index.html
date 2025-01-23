@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C4V4L0</title>
     <link rel="stylesheet" href="style/style.css">
 </head>
-
 <body>
     <main>
+        <div class="btnCavaludo">
+            <img src="img/cavalo2.png" alt="" class="slide" id="cavaludo" draggable="false">
+        </div>
         <div class="container">
             <h1>O MARCELO ESCOLHE</h1>
-            <button class="btnCavaludo">
-                <img src="img/cavalo2.png" alt="" id="cavaludo">
-            </button>
-            <h3 id="chosenAnswer"></h3>
-            <div id="mainItems">
-            </div>
+            <h3 id="respostaEscolhida"></h3>
+            <div id="mainItems"></div>
             <div class="btnGroup">
-                <button class="btn" onclick="Sortear()">Sortear</button>
-                <button class="btn" onclick="AdicionarInputParaSorteio()">Adicionar opção</button>
-                <button class="btn" onclick="ResetarRespostas()">Resetar opções</button>
+                <button class="btn" onclick="sortear()">Sortear</button>
+                <button class="btn" onclick="adicionarInputParaSorteio()">Adicionar opção</button>
+                <button class="btn" onclick="resetarRespostas()">Resetar opções</button>
             </div>
         </div>
     </main>
     <script src="js/script.js"></script>
 </body>
-
 </html>

@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     border: 0;
@@ -6,74 +6,113 @@
     user-select: none;
 }
 
-html,body{
+html, body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: rgb(31, 31, 31);
     color: white;
+    overflow: hidden;
 }
 
-main{
+body {
+    height: 100%;
+    position: relative;
+}
+
+main {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
-#cavaludo{
-    width:300px;
+.container {
+    background-color:rgba(0,0,0,0.5);
+    border: 2px solid white;
+    border-radius:10px;
+    position: relative;
+    text-align: center;
+    padding:8px;
+    z-index: 10;
+}
+
+#cavaludo {
+    width: 300px;
     border-radius: 50%;
     transition: 4s;
-    margin:30px;
-    cursor:pointer;
+    margin: 30px;
+    position: absolute;
+    z-index: 1;
 }
 
-#cavaludo:hover{
+
+#cavaludo:hover {
     transform: rotate(360deg);
 }
 
-.btnCavaludo{
+.btnCavaludo {
     background-color: transparent;
     transition: 1s;
-    transform:scale(1);
+    transform: scale(1);
 }
 
-.btnCavaludo:active{
-    transform:scale(2);
-}
-
-.girando{
+.girando {
     transform: rotate3d(1, 1, 0, 180deg);
 }
 
-.container{
-    text-align: center;
+.slide {
+    display: block;
+    position: absolute;
+    height: 200px !important;
+    width: 200px !important;
+    background: red;
 }
 
-input{
-    padding:6px;
+h1, h3 {
+    margin-top: 50px;
+    color:gainsboro;
+}
+
+input {
+    padding: 6px;
     border-radius: 15px;
     font-size: 18px;
     transition: 250ms;
-    margin:5px;
+    margin: 5px;
 }
 
-input:focus{
+input:focus {
     background-color: black;
     color: white;
 }
 
-.btn{
+.btn {
     padding: 10px;
     border-radius: 16px;
-    margin:5px;
+    margin: 5px;
     font-size: 18px;
     transition: 300ms;
     background-color: white;
 }
 
-.btn:hover{
-    padding:13px;
+.btn:hover {
+    padding: 13px;
     background-color: black;
     color: white;
-    cursor:pointer;
+    cursor: pointer;
+}
+
+.removeBtn {
+    background-color: red;
+    border-radius: 50%;
+    padding: 0.5rem;
+    width: 30px;
+    transition: 300ms;
+}
+
+.removeBtn:hover {
+    background-color: white;
+    cursor: pointer;
+    transform: scale(1.1);
 }

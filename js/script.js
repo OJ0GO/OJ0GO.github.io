@@ -1,96 +1,114 @@
-var answerGroupElement = document.getElementById("mainItems");
-var chosenAnswerElement = document.getElementById("chosenAnswer");
-var checkingNull = false;
-var answerQuantity = 2;
+var divResposta = document.getElementById("mainItems");
+var respostaEscolhida = document.getElementById("respostaEscolhida");
+var cooldown = false;
 var recarregamentoInicial = false;
 var cavaludo = document.getElementById("cavaludo");
+var respostas = ["", ""];
 
-function ResetarRespostas(){
-    if(checkingNull == true) return;
-    checkingNull = true;
-    LimparResposta();
-    answerQuantity = 2;
-    checkingNull = false;
-    RecarregarInputs();
+function resetarRespostas() {
+    if (cooldown) return;
+    cooldown = true;
+    respostas = ["", ""]; 
+    cooldown = false;
+    recarregarInputs();
 }
 
-function LimparResposta(){
-    chosenAnswerElement.innerHTML = ``;
-}
-
-function RecarregarInputs(){
-    if(checkingNull == true) return;
+function recarregarInputs() {
+    if (cooldown) return;
     recarregamentoInicial = true;
-    LimparResposta();
-    answerGroupElement.innerHTML = ``;
-    for(let i = 0; i < answerQuantity; i++){
-        answerGroupElement.innerHTML += `
-            <input type="text" id="answer${i}" placeholder="Opção ${i+1}">
+    limparResposta();
+    adicionarOpcoes();
+}
+
+function limparResposta() {
+    respostaEscolhida.innerHTML = ``;
+}
+
+function adicionarOpcoes() {
+    divResposta.innerHTML = ``;
+    respostas.forEach((value, index) => {
+        divResposta.innerHTML += `
+        <div>
+            <input type="text" id="resposta${index}" placeholder="Opção ${index + 1}" value="${value}" tabindex="${index+1}" oninput="atualizarValor(${index}, this.value)">
+            <button class="removeBtn" onclick="mensagemExcluir(${index})">X</button>
+        </div>
         `;
-    }
+    });
 }
 
-RecarregarInputs();
-
-function Sortear() {
-    if (checkingNull) return;
-    checkingNull = true;
-    LimparResposta();
-    let answers = [];
-    for (let i = 0; i < answerQuantity; i++) {
-        let answer = document.getElementById(`answer${i}`).value;
-        if (!answer) {
-            showTemporaryMessage("Preencha todos os campos antes de sortear.", 1000);
-            return;
-        }
-        answers.push(answer);
-    }
-    cavaludo.classList.add("girando");
-    let randomNumber = Math.floor(Math.random() * answers.length);
-    console.log(randomNumber, answers[randomNumber]);
-    checkingNull = false;
-    showAnswer(answers[randomNumber]);
+function atualizarValor(index, value) {
+    respostas[index] = value;
 }
 
-function showAnswer(mensagem) {
-    checkingNull = true;
-    mensagem = `O MARCELO ESCOLHEU... ${mensagem}`;
-    chosenAnswerElement.innerHTML = ''; 
-    let accumulatedDelay = 0;
+recarregarInputs();
 
-    for (let i = 0; i < mensagem.length; i++) {
-        let randomInterval = Math.floor(Math.random() * 50) + 100;
-        accumulatedDelay += randomInterval; 
-        setTimeout(() => {
-            chosenAnswerElement.innerHTML += mensagem[i];
-            
-            if(i == mensagem.length-1){
-                checkingNull = false;
-                showTemporaryMessage(mensagem, 3000);
-            }
-        }, accumulatedDelay);
-    }
-
+function mensagemExcluir(respostaId) {
+    if(cooldown || respostas.length == 2) return;
+    respostas.splice(respostaId, 1);
+    recarregarInputs(); 
 }
 
-function showTemporaryMessage(message, duration) {
-    checkingNull = true;
-    cavaludo.classList.remove("girando");
-    chosenAnswerElement.innerHTML = message;
-    setTimeout(() => {
-        chosenAnswerElement.innerHTML = ``;
-        checkingNull = false;
-    }, duration);
-}
+function sortear() {
+    if (cooldown) return;
+    cooldown = true;
+    limparResposta();
 
-function AdicionarInputParaSorteio() {
-    if(answerQuantity >= 10) {
-        showTemporaryMessage(`Você chegou ao máximo de opções permitidas`, 1000);
+    if (respostas.some(resposta => !resposta.trim())) {
+        mostrarMensagemTemporaria("Preencha todos os campos antes de sortear.", 1000);
+        cooldown = false;
         return;
     }
-        
-    answerGroupElement.innerHTML += `
-        <input type="text" id="answer${answerQuantity}" placeholder="Opção ${answerQuantity + 1}">
-    `;
-    answerQuantity += 1; 
+
+    cavaludo.classList.add("girando");
+    let numeroAleatorio = Math.floor(Math.random() * respostas.length);
+    console.log(numeroAleatorio, respostas[numeroAleatorio]);
+    mostrarResposta(respostas[numeroAleatorio]);
 }
+
+function mostrarResposta(mensagem) {
+    cooldown = true;
+    mensagem = `O MARCELO ESCOLHEU... ${mensagem}`;
+    respostaEscolhida.innerHTML = '';
+    let delayAcumulado = 0;
+
+    for (let i = 0; i < mensagem.length; i++) {
+        let intervaloAleatorio = Math.floor(Math.random() * 50) + 100;
+        delayAcumulado += intervaloAleatorio;
+        setTimeout(() => {
+            respostaEscolhida.innerHTML += mensagem[i];
+            if (i === mensagem.length - 1) {
+                cooldown = false;
+                mostrarMensagemTemporaria(mensagem, 3000);
+            }
+        }, delayAcumulado);
+    }
+}
+
+function mostrarMensagemTemporaria(message, duracao) {
+    cooldown = true;
+    cavaludo.classList.remove("girando");
+    respostaEscolhida.innerHTML = message;
+    setTimeout(() => {
+        respostaEscolhida.innerHTML = ``;
+        cooldown = false;
+    }, duracao);
+}
+
+function adicionarInputParaSorteio() {
+    if(cooldown) return;
+    if (respostas.length >= 10) {
+        mostrarMensagemTemporaria(`Você chegou ao máximo de opções permitidas`, 1000);
+        return;
+    }
+    respostas.push("");
+    recarregarInputs();
+}
+
+document.addEventListener("mousemove", (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const movementX = (mouseX / window.innerWidth) * 100;
+    const movementY = (mouseY / window.innerHeight) * -100;
+    const cavalo = document.getElementById("cavaludo");
+    cavalo.style.transform = `translate(${movementX}%, ${movementY}%)`;
+});
