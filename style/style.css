@@ -116,3 +116,48 @@ input:focus {
     cursor: pointer;
     transform: scale(1.1);
 }
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+#removerSorteado {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid white; 
+    border-radius: 4px; 
+    background-color: transparent; 
+    cursor: pointer;
+    position: relative;
+}
+
+#removerSorteado:checked::before {
+    content: "✔"; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: white;
+}
+
+.checkbox-group label {
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#removerSorteado:hover {
+    border-color: gainsboro; 
+}
+
+.checkbox-group label:hover {
+    color: gainsboro;
+}

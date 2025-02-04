@@ -4,11 +4,13 @@ var cooldown = false;
 var recarregamentoInicial = false;
 var cavaludo = document.getElementById("cavaludo");
 var respostas = ["", ""];
+var removerSorteadoCheckbox = document.getElementById('removerSorteado');
+var checkboxGroup = document.getElementById('checkboxGroup');
 
 function resetarRespostas() {
     if (cooldown) return;
     cooldown = true;
-    respostas = ["", ""]; 
+    respostas = ["", ""];
     cooldown = false;
     recarregarInputs();
 }
@@ -18,7 +20,10 @@ function recarregarInputs() {
     recarregamentoInicial = true;
     limparResposta();
     adicionarOpcoes();
+    atualizarVisibilidadeCheckbox();
 }
+
+recarregarInputs();
 
 function limparResposta() {
     respostaEscolhida.innerHTML = ``;
@@ -40,12 +45,15 @@ function atualizarValor(index, value) {
     respostas[index] = value;
 }
 
-recarregarInputs();
 
 function mensagemExcluir(respostaId) {
-    if(cooldown || respostas.length == 2) return;
+    if (cooldown == true) return;
+    if (respostas.length == 2) {
+        mostrarMensagemTemporaria("O número de alternativas não pode ser menor que 2.", 1000);
+        return;
+    }
     respostas.splice(respostaId, 1);
-    recarregarInputs(); 
+    recarregarInputs();
 }
 
 function sortear() {
@@ -61,13 +69,12 @@ function sortear() {
 
     cavaludo.classList.add("girando");
     let numeroAleatorio = Math.floor(Math.random() * respostas.length);
-    console.log(numeroAleatorio, respostas[numeroAleatorio]);
-    mostrarResposta(respostas[numeroAleatorio]);
+    mostrarResposta(numeroAleatorio);
 }
 
-function mostrarResposta(mensagem) {
+function mostrarResposta(indice) {
     cooldown = true;
-    mensagem = `O MARCELO ESCOLHEU... ${mensagem}`;
+    let mensagem = `O MARCELO ESCOLHEU... ${respostas[indice]}`;
     respostaEscolhida.innerHTML = '';
     let delayAcumulado = 0;
 
@@ -78,6 +85,9 @@ function mostrarResposta(mensagem) {
             respostaEscolhida.innerHTML += mensagem[i];
             if (i === mensagem.length - 1) {
                 cooldown = false;
+                if (removerSorteadoCheckbox.checked) {
+                    respostas.splice(indice, 1);
+                }
                 mostrarMensagemTemporaria(mensagem, 3000);
             }
         }, delayAcumulado);
@@ -91,11 +101,12 @@ function mostrarMensagemTemporaria(message, duracao) {
     setTimeout(() => {
         respostaEscolhida.innerHTML = ``;
         cooldown = false;
+        recarregarInputs();
     }, duracao);
 }
 
 function adicionarInputParaSorteio() {
-    if(cooldown) return;
+    if (cooldown) return;
     if (respostas.length >= 10) {
         mostrarMensagemTemporaria(`Você chegou ao máximo de opções permitidas`, 1000);
         return;
@@ -104,11 +115,23 @@ function adicionarInputParaSorteio() {
     recarregarInputs();
 }
 
+function atualizarVisibilidadeCheckbox() {
+    if (respostas.length > 2) {
+        checkboxGroup.style.display = "flex";
+    }
+    else {
+        checkboxGroup.style.display = "none";
+        removerSorteadoCheckbox.checked = false;
+    }
+}
+
 document.addEventListener("mousemove", (e) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
-    const movementX = (mouseX / window.innerWidth) * 100;
-    const movementY = (mouseY / window.innerHeight) * -100;
-    const cavalo = document.getElementById("cavaludo");
-    cavalo.style.transform = `translate(${movementX}%, ${movementY}%)`;
+    const offsetX = mouseX - window.innerWidth / 2;
+    const offsetY = mouseY - window.innerHeight / 2;
+    const sensitivity = 1; 
+    const moveX = offsetX * sensitivity;
+    const moveY = offsetY * sensitivity;
+    cavaludo.style.transform = `translate(${moveX}px, ${moveY}px)`;
 });
